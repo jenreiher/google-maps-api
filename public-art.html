@@ -32,14 +32,18 @@
           center: victoria
         });
 
+        // load in the data from the json file
         $.getJSON("art.json").done(function(data) {
+          // loop over each of the 'Art' objects
           $.each(data.Art, function(index, item) {
+            // create a marker
             var marker = new google.maps.Marker({
               position: {lat: item.Lat, lng: item.Long },
               map: map,
               title: item.Title != 0 ? item.Title : "Untitled"
             });
 
+            // create an info window
             var title = item.Title != 0 ? item.Title : "Untitled";
             var description = item.Description != 0 ? item.Description : "";
             var artist = item.Artist != 0 ? item.Artist : "not listed";
@@ -47,12 +51,15 @@
             var contentString = '<div> <h3>' + title + '</h3><em> Artist: ' + artist + '</em><p>' + description + '</p></div>'; 
 
             marker.addListener('click', function() {
+              // if there is already an infowindow open, close it
               if (infowindow) {
                 infowindow.close();
               }
+              // creat a new infowindow with the content related to the marker
               infowindow = new google.maps.InfoWindow({
                 content: contentString
               });
+              // open the infowindow
               infowindow.open(map, marker);
             });
           });
